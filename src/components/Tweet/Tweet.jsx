@@ -4,22 +4,33 @@ import { formatLikes } from "../../utils/format"
 import "./Tweet.css"
 
 export default function Tweet({ tweet }) {
+  const [likes, setLikes] = React.useState(tweet.likes);
+  const [collapse, setCollapse] = React.useState(false);
+
+  const handleLikesOnClick = () => {
+    setLikes(likes + 1);
+  }
+
+  const handleCollapse = () => {
+    setCollapse(!collapse);
+  }
+
   return (
-    <div className="tweet" data-tweet-id={null}>
+    <div className="tweet" data-tweet-id={tweet.id}>
       <div className="tweet-avatar">
         <AvatarIcon />
       </div>
 
       <div className="tweet-content">
-        <TweetUserInfo />
-        <p className="tweet-text"></p>
-        <TweetFooter />
+        <TweetUserInfo name={tweet.name} handle={tweet.handle} handleCollapse={handleCollapse} />
+        <p className={collapse ? "collapse" : "tweet-text"}>{tweet.text}</p>
+        <TweetFooter handleLikesOnClick={handleLikesOnClick} numComments={tweet.comments} numRetweets={tweet.retweets} numLikes={likes} />
       </div>
     </div>
   )
 }
 
-export function TweetUserInfo({ name, handle }) {
+export function TweetUserInfo({ name, handle, handleCollapse }) {
   return (
     <div className="tweet-user-info">
       <div className="meta">
@@ -28,12 +39,12 @@ export function TweetUserInfo({ name, handle }) {
         <span className="dot">•</span>
         <span className="ts">1 min</span>
       </div>
-      <i className="fa fa-angle-down"></i>
+      <i className="fa fa-angle-down" onClick={handleCollapse}></i>
     </div>
   )
 }
 
-export function TweetFooter({ numComments, numRetweets, numLikes }) {
+export function TweetFooter({ handleLikesOnClick, numComments, numRetweets, numLikes }) {
   return (
     <div className="tweet-footer">
       <span>
@@ -45,7 +56,7 @@ export function TweetFooter({ numComments, numRetweets, numLikes }) {
         {numRetweets || 0}
       </span>
       <span>
-        <i className="fas fa-heart"></i>
+        <i className="fas fa-heart" onClick={handleLikesOnClick}></i>
         {formatLikes(numLikes ?? 0)}
       </span>
       <span>

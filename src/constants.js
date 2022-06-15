@@ -3,6 +3,9 @@ export const codepathUserProfile = {
   handle: "codepath",
   numTweets: 1299,
   numFollowers: 2500000,
+  numFollowing: 52,
+  biography: "Eat. Code. Sleep. Repeat",
+  location: "Yo mamas house",
 }
 
 export const firstTweet = {
